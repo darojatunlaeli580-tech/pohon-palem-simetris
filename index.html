@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"></head><body>
+<title>Tuntun Basa</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Sans+Javanese:wght@400;700&display=swap">
+<style>
+/* Layout: satu kolom ala aplikasi ponsel (maks 520px). Nuansa kertas dluwang, sogan, dan indigo. Peta level berkelok dengan gunungan di ujung jalur. */
+:root {
+  --bg: #F3ECDD;
+  --surface: #FBF7EE;
+  --surface-2: #E9DFCB;
+  --fg: #2A1D14;
+  --muted: #6B5644;
+  --line: #D8CAAE;
+  --brand: #243B7A;
+  --brand-dk: #172A5E;
+  --brand-bg: #E1E6F4;
+  --on-brand: #FFFFFF;
+  --banner: #243B7A;
+  --ok: #2B7A4B;
+  --ok-dk: #1E5C38;
+  --ok-bg: #DCEFE0;
+  --on-ok: #FFFFFF;
+  --bad: #B3362D;
+  --bad-dk: #8A2721;
+  --bad-bg: #F7DDD9;
+  --xp: #B07A0A;
+  --gold: #C9962B;
+  --gold-dk: #94691A;
+  --on-gold: #2A1D14;
+  --sogan: #7A4A22;
+  --deep: #172A5E;
+  --fire: #C2410C;
+  --font-ui: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-aks: "Noto Sans Javanese", "Nunito", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14100D; --surface: #211A15; --surface-2: #2D241D; --fg: #F1E7D8; --muted: #B6A48E; --line: #3A2F26;
+    --brand: #8FA6EA; --brand-dk: #6A85DA; --brand-bg: #202A4F; --on-brand: #0F1A3D; --banner: #243B7A;
+    --ok: #5CC48A; --ok-dk: #3A9A64; --ok-bg: #17331F; --on-ok: #07210F;
+    --bad: #EE7A70; --bad-dk: #C4574E; --bad-bg: #3F1B18;
+    --xp: #E7B032; --gold: #D9A441; --gold-dk: #A97D24; --on-gold: #1E140B; --sogan: #C58A55; --deep: #172A5E; --fire: #FF8A3D;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14100D; --surface: #211A15; --surface-2: #2D241D; --fg: #F1E7D8; --muted: #B6A48E; --line: #3A2F26;
+  --brand: #8FA6EA; --brand-dk: #6A85DA; --brand-bg: #202A4F; --on-brand: #0F1A3D; --banner: #243B7A;
+  --ok: #5CC48A; --ok-dk: #3A9A64; --ok-bg: #17331F; --on-ok: #07210F;
+  --bad: #EE7A70; --bad-dk: #C4574E; --bad-bg: #3F1B18;
+  --xp: #E7B032; --gold: #D9A441; --gold-dk: #A97D24; --on-gold: #1E140B; --sogan: #C58A55; --deep: #172A5E; --fire: #FF8A3D;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--font-ui); font-size: 16px; line-height: 1.45;
+  padding-block: 0 96px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+button { font-family: inherit; color: inherit; }
+button:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+.shell { max-width: 520px; margin: 0 auto; }
+svg.i { width: 1.25em; height: 1.25em; flex: none; }
+
+/* header */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.brand b { font-size: 1.15rem; font-weight: 900; letter-spacing: -.01em; }
+.aks { font-family: var(--font-aks); font-size: 1.05rem; color: var(--brand); background: var(--brand-bg); border-radius: 10px; padding: 2px 10px; white-space: nowrap; }
+.stats { display: flex; gap: 12px; font-weight: 900; }
+.stat { display: inline-flex; align-items: center; gap: 4px; font-variant-numeric: tabular-nums; }
+.stat.fire { color: var(--fire); } .stat.xp { color: var(--xp); } .stat.heart { color: var(--bad); }
+
+/* home */
+.banner { position: relative; overflow: hidden; background-color: var(--banner); color: #fff; border-radius: 20px; padding: 18px 18px; display: flex; justify-content: space-between; gap: 12px; align-items: center; border-bottom: 5px solid var(--deep);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cg fill='none' stroke='%23E7C46A' stroke-opacity='.28' stroke-width='1.3'%3E%3Cellipse cx='22' cy='11' rx='6.5' ry='11'/%3E%3Cellipse cx='22' cy='33' rx='6.5' ry='11'/%3E%3Cellipse cx='11' cy='22' rx='11' ry='6.5'/%3E%3Cellipse cx='33' cy='22' rx='11' ry='6.5'/%3E%3C/g%3E%3C/svg%3E"); }
+.banner > div { position: relative; }
+.banner small { font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.banner h1 { margin: 2px 0 2px; font-size: 1.4rem; line-height: 1.2; font-weight: 900; text-wrap: balance; }
+.banner p { margin: 0; opacity: .92; font-size: .92rem; }
+.banner svg { width: 62px; height: 74px; flex: none; }
+.goal { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.goal .gh { display: flex; justify-content: space-between; font-weight: 800; font-size: .9rem; }
+.goal .gh span:last-child { color: var(--xp); font-variant-numeric: tabular-nums; }
+.goal .bar { height: 12px; }
+.goal .bar > i { background: var(--gold); }
+
+.trail { position: relative; margin: 14px 0 6px; }
+.trail > svg.line { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.trail path { fill: none; stroke: var(--line); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 2 14; vector-effect: non-scaling-stroke; }
+.trail path.on { stroke: var(--gold); stroke-dasharray: none; }
+.stop { position: absolute; transform: translateX(-50%); width: 150px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
+.node { width: 96px; height: 96px; border-radius: 50%; border: 0; border-bottom: 8px solid var(--brand-dk); background: var(--brand); color: var(--on-brand); display: grid; place-items: center; font-size: 2.1rem; font-weight: 900; cursor: pointer; box-shadow: 0 0 0 6px var(--bg), 0 0 0 9px var(--line); }
+.node.cur { box-shadow: 0 0 0 6px var(--bg), 0 0 0 10px var(--gold); }
+.node:active { transform: translateY(4px); border-bottom-width: 4px; }
+.node.done { background: var(--gold); border-bottom-color: var(--gold-dk); color: var(--on-gold); }
+.node.locked { background: var(--surface-2); border-bottom-color: var(--line); color: var(--muted); cursor: not-allowed; }
+.node svg { width: 42px; height: 42px; }
+.stop h3 { margin: 0; font-size: 1.05rem; font-weight: 900; line-height: 1.2; }
+.stop p { margin: 0; font-size: .82rem; color: var(--muted); line-height: 1.3; }
+.stars { display: flex; gap: 2px; justify-content: center; color: var(--gold); height: 16px; }
+.stars svg { width: 16px; height: 16px; }
+.stars .off { color: var(--line); }
+.start-tip { position: absolute; top: -34px; background: var(--surface); color: var(--ok); border: 2px solid var(--line); border-radius: 12px; padding: 1px 12px; font-size: .78rem; font-weight: 900; letter-spacing: .08em; }
+.start-tip::after { content: ""; position: absolute; left: 50%; bottom: -7px; width: 10px; height: 10px; background: var(--surface); border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); transform: translateX(-50%) rotate(45deg); }
+@media (prefers-reduced-motion: no-preference) { .start-tip { animation: bob 1.6s ease-in-out infinite; } }
+@keyframes bob { 50% { transform: translateY(-4px); } }
+.goalpost svg { width: 84px; height: 100px; }
+.goalpost.off svg { opacity: .35; filter: grayscale(.6); }
+
+/* tabs */
+.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; background: var(--surface); border-top: 2px solid var(--line); padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); }
+.tabs > div { max-width: 520px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.tab { border: 2px solid transparent; background: none; border-radius: 14px; padding: 6px 4px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: .78rem; font-weight: 800; color: var(--muted); cursor: pointer; }
+.tab svg { width: 24px; height: 24px; }
+.tab[aria-current="page"] { color: var(--brand); background: var(--brand-bg); border-color: var(--brand); }
+
+/* cards */
+.card { background: var(--surface); border: 2px solid var(--line); border-radius: 18px; padding: 14px 16px; }
+h2.sec { font-size: 1.3rem; font-weight: 900; margin: 6px 0 4px; }
+.lead { color: var(--muted); margin: 0 0 14px; font-size: .95rem; }
+.list { display: flex; flex-direction: column; gap: 10px; }
+.row { display: flex; align-items: center; gap: 12px; }
+.rank { width: 28px; text-align: center; font-weight: 900; color: var(--muted); font-variant-numeric: tabular-nums; }
+.av { width: 40px; height: 40px; border-radius: 50%; background: var(--brand-bg); color: var(--brand); display: grid; place-items: center; font-weight: 900; flex: none; }
+.row .grow { flex: 1; min-width: 0; font-weight: 800; overflow-wrap: anywhere; }
+.row .pts { font-weight: 900; color: var(--xp); font-variant-numeric: tabular-nums; }
+.row.me { background: var(--brand-bg); border-color: var(--brand); }
+.pill { display: inline-block; font-size: .72rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; background: var(--surface-2); color: var(--muted); border-radius: 999px; padding: 2px 10px; }
+.map-item h3 { margin: 0 0 2px; font-size: 1rem; font-weight: 900; }
+.map-item .feat { color: var(--brand); font-weight: 800; font-size: .85rem; }
+.map-item p { margin: 4px 0 0; font-size: .92rem; color: var(--fg); }
+.tools { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.ghost { border: 2px solid var(--line); border-bottom-width: 4px; background: var(--surface); border-radius: 14px; padding: 11px 14px; font-weight: 800; cursor: pointer; text-align: left; }
+.ghost:active { transform: translateY(2px); border-bottom-width: 2px; }
+
+/* lesson */
+.ltop { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); display: flex; align-items: center; gap: 12px; padding-block: 14px; }
+.x { border: 0; background: none; color: var(--muted); padding: 4px; cursor: pointer; display: grid; place-items: center; }
+.x svg { width: 28px; height: 28px; }
+.bar { flex: 1; height: 16px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--ok); border-radius: 999px; transition: width .35s ease; }
+@media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } }
+.lbody { padding-block: 8px 200px; display: flex; flex-direction: column; gap: 18px; }
+.lbody h2 { margin: 0; font-size: 1.45rem; font-weight: 900; line-height: 1.25; text-wrap: balance; }
+.hint { color: var(--muted); font-weight: 700; font-size: .9rem; margin: -10px 0 0; }
+.bubble-row { display: flex; gap: 12px; align-items: flex-start; }
+.bubble-row .av { width: 52px; height: 52px; font-size: 1.1rem; }
+.bubble { background: var(--surface); border: 2px solid var(--line); border-radius: 16px; padding: 10px 14px; font-weight: 700; position: relative; }
+.bubble small { display: block; color: var(--muted); font-weight: 800; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; }
+.opts { display: flex; flex-direction: column; gap: 10px; }
+.opt { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: var(--surface); border: 2px solid var(--line); border-bottom-width: 4px; border-radius: 16px; padding: 14px 16px; font-size: 1.02rem; font-weight: 800; cursor: pointer; }
+.opt .k { width: 28px; height: 28px; border: 2px solid var(--line); border-radius: 8px; display: grid; place-items: center; font-size: .8rem; color: var(--muted); flex: none; }
+.opt.sel { border-color: var(--brand); background: var(--brand-bg); }
+.opt.sel .k { border-color: var(--brand); color: var(--brand); }
+.opt.right { border-color: var(--ok); background: var(--ok-bg); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-bg); }
+.opt:disabled { cursor: default; }
+.match { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.match .col { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.m { background: var(--surface); border: 2px solid var(--line); border-bottom-width: 4px; border-radius: 14px; padding: 14px 8px; font-weight: 800; font-size: 1rem; cursor: pointer; overflow-wrap: anywhere; min-height: 56px; }
+.m.sel { border-color: var(--brand); background: var(--brand-bg); }
+.m.ok { visibility: hidden; }
+.m.flash { border-color: var(--bad); background: var(--bad-bg); }
+@media (prefers-reduced-motion: no-preference) { .m.flash, .opt.wrong { animation: shake .3s; } }
+@keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+.sentence-id { font-size: 1.05rem; font-weight: 700; background: var(--surface); border: 2px solid var(--line); border-radius: 16px; padding: 12px 14px; }
+.answer { display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; min-height: 74px; padding: 10px 0; border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); }
+.bank { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; min-height: 56px; }
+.chip { background: var(--surface); border: 2px solid var(--line); border-bottom-width: 4px; border-radius: 12px; padding: 8px 14px; font-weight: 800; font-size: 1rem; cursor: pointer; }
+.chip.used { visibility: hidden; }
+.chip:disabled { cursor: default; }
+
+.dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--bg); border-top: 2px solid var(--line); padding: 14px max(16px, env(safe-area-inset-right, 0px)) calc(14px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.dock.ok { background: var(--ok-bg); border-top-color: var(--ok); }
+.dock.bad { background: var(--bad-bg); border-top-color: var(--bad); }
+.dock > div { max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+.fbt { display: flex; align-items: center; gap: 10px; font-size: 1.25rem; font-weight: 900; }
+.dock.ok .fbt { color: var(--ok); } .dock.bad .fbt { color: var(--bad); }
+.fbt svg { width: 28px; height: 28px; }
+.fbt .gain { margin-left: auto; font-size: .95rem; color: var(--xp); background: var(--surface); border-radius: 999px; padding: 2px 12px; }
+.fbm { margin: 0; font-size: .95rem; font-weight: 700; color: var(--fg); }
+.btn { width: 100%; border: 0; border-bottom: 5px solid var(--ok-dk); background: var(--ok); color: var(--on-ok); border-radius: 16px; padding: 14px; font-weight: 900; font-size: 1rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+.btn:active:not(:disabled) { transform: translateY(3px); border-bottom-width: 2px; }
+.btn:disabled { background: var(--surface-2); color: var(--muted); border-bottom-color: var(--line); cursor: not-allowed; }
+.btn.bad { background: var(--bad); border-bottom-color: var(--bad-dk); color: #fff; }
+.btn.brand { background: var(--brand); border-bottom-color: var(--brand-dk); color: var(--on-brand); }
+
+/* done / fail */
+.center { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding-top: 28px; }
+.seal { width: 112px; height: 112px; border-radius: 50%; background: var(--gold); color: var(--on-gold); display: grid; place-items: center; border-bottom: 7px solid var(--gold-dk); }
+.seal.bad { background: var(--bad); color: #fff; border-bottom-color: var(--bad-dk); }
+.seal svg { width: 60px; height: 60px; }
+.center h1 { margin: 0; font-size: 1.7rem; font-weight: 900; text-wrap: balance; }
+.center p { margin: 0; color: var(--muted); max-width: 34ch; }
+.res { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
+.res .card { padding: 10px 6px; }
+.res b { display: block; font-size: 1.4rem; font-weight: 900; font-variant-numeric: tabular-nums; }
+.res span { font-size: .75rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.res .xpc b { color: var(--xp); } .res .okc b { color: var(--ok); }
+.lencana { display: flex; align-items: center; gap: 12px; text-align: left; width: 100%; }
+.lencana .medal { width: 56px; height: 56px; border-radius: 50%; background: var(--gold); color: var(--on-gold); display: grid; place-items: center; flex: none; }
+.lencana .medal svg { width: 30px; height: 30px; }
+.lencana b { display: block; font-weight: 900; }
+.lencana span { color: var(--muted); font-size: .9rem; }
+.review { width: 100%; text-align: left; display: flex; flex-direction: column; gap: 8px; }
+.review h3 { margin: 0; font-size: 1rem; font-weight: 900; }
+.review ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: .92rem; font-weight: 700; }
+.review li span { color: var(--ok); }
+.confetti { position: fixed; inset: 0 0 auto; height: 0; pointer-events: none; z-index: 40; }
+.confetti i { position: absolute; top: -12px; width: 9px; height: 14px; border-radius: 2px; opacity: 0; }
+@media (prefers-reduced-motion: no-preference) { .confetti i { animation: fall 2.4s ease-in forwards; } }
+@keyframes fall { 0% { opacity: 1; transform: translateY(0) rotate(0); } 100% { opacity: 0; transform: translateY(90vh) rotate(540deg); } }
+</style>
+
+<div class="shell" id="root"></div>
+
+<script>
+(function () {
+  var ICONS = {
+    flame: '<path d="M12 2c1 3.6 4.2 5.3 4.2 9.2a4.2 4.2 0 1 1-8.4 0c0-1.7.8-2.8 1.7-3.8C10.4 6.4 11.5 4.7 12 2z" fill="currentColor"/>',
+    heart: '<path d="M12 21s-7.5-4.6-9.5-9.2C1 8.2 3.2 5 6.4 5c2 0 3.6 1.1 5.6 3.3C14 6.1 15.6 5 17.6 5c3.2 0 5.4 3.2 3.9 6.8C19.5 16.4 12 21 12 21z" fill="currentColor"/>',
+    bolt: '<path d="M13 2 4 14h6l-1 8 9-12h-6z" fill="currentColor"/>',
+    lock: '<rect x="5" y="11" width="14" height="10" rx="2.5" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>',
+    check: '<path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>',
+    x: '<path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>',
+    star: '<path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5-5.9-3.2-5.9 3.2 1.2-6.5L2.5 9.4l6.6-.9z" fill="currentColor"/>',
+    home: '<path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" fill="currentColor"/>',
+    chart: '<rect x="3" y="12" width="5" height="9" rx="1.5" fill="currentColor"/><rect x="9.5" y="4" width="5" height="17" rx="1.5" fill="currentColor"/><rect x="16" y="9" width="5" height="12" rx="1.5" fill="currentColor"/>',
+    book: '<path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H19v15H6a2 2 0 0 0-2 2z" fill="currentColor"/><path d="M6 18h13v3H6a2 2 0 0 1 0-3z" fill="currentColor" opacity=".55"/>'
+  };
+  function ico(n, c) { return '<svg class="i ' + (c || '') + '" viewBox="0 0 24 24" aria-hidden="true">' + ICONS[n] + '</svg>'; }
+  /* Gunungan (kayon): siluet daun dengan pintu dan pohon kehidupan */
+  function gunungan(fill, line, door) {
+    return '<svg viewBox="0 0 100 120" aria-hidden="true">' +
+      '<path d="M50 4C57 28 84 38 84 72c0 26-16 44-34 44S16 98 16 72C16 38 43 28 50 4z" fill="' + fill + '"/>' +
+      '<path d="M50 22C55 42 72 50 72 74c0 18-10 30-22 30S28 92 28 74c0-24 17-32 22-50z" fill="none" stroke="' + line + '" stroke-width="2.6"/>' +
+      '<path d="M50 40v22M50 48l-8-7M50 48l8-7M50 56l-10-6M50 56l10-6" fill="none" stroke="' + line + '" stroke-width="2.4" stroke-linecap="round"/>' +
+      '<path d="M39 112V86a11 11 0 0 1 22 0v26z" fill="' + door + '"/>' +
+      '<circle cx="50" cy="73" r="3.2" fill="' + line + '"/></svg>';
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+  /* ---------- Materi: unggah-ungguh basa ---------- */
+  var LEVELS = [
+    { id: 1, name: 'Ngoko', sub: 'Sapaan ke kanca', badge: 'Lencana Ngoko', qs: [
+      { t: 'mc', q: 'Endi ukara ngoko?', opts: ['Aku arep lunga menyang pasar.', 'Kula badhe kesah dhateng peken.', 'Kula badhe tindak dhateng peken.'], a: 0, why: 'Ngoko dipakai ke teman sebaya atau yang lebih muda. Kata aku, arep, lunga, dan menyang adalah ngoko.' },
+      { t: 'match', q: 'Cocokkan kata ngoko dengan artinya', pairs: [['mangan', 'makan'], ['turu', 'tidur'], ['lunga', 'pergi'], ['ngombe', 'minum']], why: 'Mangan, turu, lunga, dan ngombe adalah kosakata ngoko sehari-hari.' },
+      { t: 'build', q: 'Susun kalimat ngoko ini', id: 'Kamu sudah makan belum?', words: ['Kowe', 'wis', 'mangan', 'durung'], extra: ['dhahar', 'panjenengan'], why: '"Kowe wis mangan durung?" adalah ngoko untuk bertanya ke teman.' },
+      { t: 'mc', q: 'Adhiku lagi ... sega ing pawon.', opts: ['mangan', 'dhahar', 'nedha'], a: 0, why: 'Adhiku (adikku) lebih muda, jadi pakai ngoko: mangan. Dhahar untuk orang yang dihormati.' },
+      { t: 'mc', who: 'Kanca sekelas', q: 'Kowe arep takon marang kanca sekelas. Endi ukara sing pas?', opts: ['Kowe arep lunga ngendi?', 'Panjenengan badhe tindak pundi?', 'Sampeyan badhe kesah pundi?'], a: 0, why: 'Ke teman sebaya cukup memakai ngoko.' },
+      { t: 'mc', q: 'Pilih ukara ngoko untuk "Saya mau tidur."', opts: ['Aku arep turu.', 'Kula badhe sare.', 'Kula badhe tilem.'], a: 0, why: 'Aku, arep, dan turu semuanya ngoko.' }
+    ] },
+    { id: 2, name: 'Krama', sub: 'Ngomong karo wong tuwa lan guru', badge: 'Lencana Krama', qs: [
+      { t: 'mc', who: 'Ibu', q: 'Bu, kula badhe ... dhateng sekolah.', opts: ['lunga', 'kesah', 'tindak'], a: 1, why: 'Untuk diri sendiri ke orang yang dihormati, pakai krama: kesah. Tindak (krama inggil) hanya untuk orang yang dihormati.' },
+      { t: 'match', q: 'Cocokkan ngoko dengan krama', pairs: [['aku', 'kula'], ['ora', 'mboten'], ['wis', 'sampun'], ['iya', 'inggih']], why: 'Aku jadi kula, ora jadi mboten, wis jadi sampun, iya jadi inggih.' },
+      { t: 'build', q: 'Susun kalimat krama ini', id: 'Saya sudah makan.', words: ['Kula', 'sampun', 'nedha'], extra: ['mboten', 'dhahar'], why: 'Untuk diri sendiri pakai krama: nedha, bukan dhahar.' },
+      { t: 'mc', q: 'Pilih padanan krama untuk "Aku ora ngerti."', opts: ['Kula mboten ngertos.', 'Aku mboten ngertos.', 'Kula ora ngerti.'], a: 0, why: 'Aku jadi kula, ora jadi mboten, ngerti jadi ngertos.' },
+      { t: 'mc', who: 'Bu Guru', q: 'Kowe arep pamit marang Bu Guru. Endi sing trep?', opts: ['Bu, kula nyuwun pamit.', 'Bu, aku njaluk pamit.', 'Bu, aku arep pamit.'], a: 0, why: 'Nyuwun adalah krama dari njaluk, dan kula adalah krama dari aku.' },
+      { t: 'mc', who: 'Bapak', q: 'Bapak takon, "Kowe wis mangan?" Wangsulanmu sing trep?', opts: ['Sampun, Pak.', 'Wis, Pak.', 'Sudah, Pak.'], a: 0, why: 'Anak menjawab orang tua dengan krama: sampun.' }
+    ] },
+    { id: 3, name: 'Krama inggil', sub: 'Ngajeni wong sing diajak guneman', badge: 'Lencana Krama Inggil', qs: [
+      { t: 'mc', who: 'Bapak', q: 'Bapak sampun ... dereng?', opts: ['nedha', 'dhahar', 'mangan'], a: 1, why: 'Untuk orang yang dihormati pakai krama inggil: dhahar.' },
+      { t: 'match', q: 'Cocokkan ngoko dengan krama inggil', pairs: [['turu', 'sare'], ['lunga', 'tindak'], ['mangan', 'dhahar'], ['ngomong', 'ngendika']], why: 'Krama inggil dipakai untuk tindakan orang yang dihormati.' },
+      { t: 'build', q: 'Susun kalimat ini', id: 'Bapak akan pergi ke Semarang.', words: ['Bapak', 'badhe', 'tindak', 'dhateng', 'Semarang'], extra: ['kesah', 'arep'], why: 'Bapak dihormati, jadi pakai tindak (krama inggil). Dhateng berarti ke.' },
+      { t: 'mc', who: 'Simbah', q: 'Simbah sampun ..., aja diganggu.', opts: ['turu', 'sare', 'tilem'], a: 1, why: 'Simbah dihormati: sare (krama inggil). Tilem adalah krama biasa untuk diri sendiri.' },
+      { t: 'mc', who: 'Bu Guru', q: 'Kowe arep ngomong marang Bu Guru yen kowe dhewe arep mangan. Endi sing bener?', opts: ['Kula badhe nedha.', 'Kula badhe dhahar.', 'Kula arep mangan.'], a: 0, why: 'Krama inggil tidak dipakai untuk diri sendiri. Pakai nedha.' },
+      { t: 'mc', who: 'Pak Guru', q: 'Pak Guru lagi ... marang murid-murid.', opts: ['ngomong', 'matur', 'ngendika'], a: 2, why: 'Ngendika adalah krama inggil dari ngomong untuk Pak Guru. Matur dipakai saat kita sendiri berbicara ke orang yang dihormati.' }
+    ] },
+    { id: 4, name: 'Krama andhap', sub: 'Andhap asor marang sing dihormati', badge: 'Lencana Krama Andhap', qs: [
+      { t: 'mc', who: 'Pak Lurah', q: 'Aku arep ... marang Pak Lurah. (berbicara)', opts: ['matur', 'ngendika', 'ngomong'], a: 0, why: 'Matur adalah krama andhap: kita merendah saat berbicara kepada orang yang dihormati.' },
+      { t: 'match', q: 'Cocokkan ngoko dengan krama andhap', pairs: [['ngomong', 'matur'], ['njaluk', 'nyuwun'], ['menehi', 'ngaturaken']], why: 'Krama andhap dipakai untuk tindakan diri sendiri kepada orang yang dihormati.' },
+      { t: 'build', q: 'Susun kalimat ini', id: 'Saya akan bertamu ke tempat Simbah.', words: ['Kula', 'badhe', 'sowan', 'dhateng', 'Simbah'], extra: ['arep', 'dolan'], why: 'Sowan berarti bertamu ke orang yang dihormati.' },
+      { t: 'mc', who: 'Pak Lurah', q: 'Endi ukara sing trep kanggo ngomong marang Pak Lurah?', opts: ['Kula badhe matur.', 'Kula badhe ngendika.', 'Aku arep matur.'], a: 0, why: 'Untuk diri sendiri pakai matur. Ngendika untuk Pak Lurah, dan aku harus diganti kula.' },
+      { t: 'mc', who: 'Bu Guru', q: 'Bu Guru lagi ..., murid-murid padha ngrungokake.', opts: ['matur', 'ngendika', 'nyuwun'], a: 1, why: 'Bu Guru dihormati, jadi pakai ngendika (krama inggil).' },
+      { t: 'mc', q: 'Endi sing kalebu krama andhap?', opts: ['sowan', 'tindak', 'dhahar'], a: 0, why: 'Sowan adalah krama andhap. Tindak dan dhahar adalah krama inggil.' }
+    ] },
+    { id: 5, name: 'Campuran', sub: 'Kuis pungkasan kabeh tataran', badge: 'Lencana Tuntun Basa', qs: [
+      { t: 'mc', who: 'Adhi', q: 'Kowe ngomong karo adhi. Endi sing pas?', opts: ['Kowe wis mangan?', 'Panjenengan sampun dhahar?', 'Sampeyan sampun nedha?'], a: 0, why: 'Ke adik cukup ngoko.' },
+      { t: 'mc', who: 'Simbah', q: 'Kowe takon marang Simbah. Endi sing pas?', opts: ['Mbah, kowe wis mangan?', 'Mbah, panjenengan sampun dhahar?', 'Mbah, sampeyan wis mangan?'], a: 1, why: 'Ke Simbah pakai krama dan krama inggil: panjenengan sampun dhahar.' },
+      { t: 'match', q: 'Cocokkan kata dengan tingkat tuturnya', pairs: [['mangan', 'Ngoko'], ['nedha', 'Krama'], ['dhahar', 'Krama inggil']], why: 'Mangan (ngoko), nedha (krama), dhahar (krama inggil) berarti makan.' },
+      { t: 'build', q: 'Susun kalimat ini', id: 'Mbah, Anda akan pergi ke mana?', words: ['Mbah', 'panjenengan', 'badhe', 'tindak', 'pundi'], extra: ['lunga', 'kowe'], why: 'Ke Simbah: panjenengan, badhe, tindak, pundi.' },
+      { t: 'mc', q: 'Endi ukara sing salah?', opts: ['Bapak sampun dhahar.', 'Kula sampun nedha.', 'Kula sampun dhahar.'], a: 2, why: 'Dhahar untuk orang lain yang dihormati, bukan untuk diri sendiri.' },
+      { t: 'mc', who: 'Pak Lurah', q: 'Kowe arep matur marang Pak Lurah yen kowe arep sowan. Endi sing pas?', opts: ['Kula badhe sowan, Pak.', 'Aku arep sowan, Pak.', 'Kula arep sowan, Pak.'], a: 0, why: 'Kula, badhe, dan sowan konsisten memakai krama.' }
+    ] }
+  ];
+  var GOAL = 50;
+  var LOWER = [['Rani', 468], ['Bagas', 352], ['Sekar', 291], ['Dimas', 214], ['Laras', 136]];
+  var PRAISE = ['Mantep!', 'Apik tenan!', 'Bener!', 'Sip!', 'Pinter!'];
+  var MISS = ['Durung pas.', 'Meh bener.', 'Coba maneh.'];
+
+  /* ---------- State ---------- */
+  var KEY = 'tuntunbasa-v2';
+  function load() { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { return null; } }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+  function fresh() { return { xp: 0, streak: 0, lastDay: '', hearts: 5, done: {}, open: false, sound: true, today: null }; }
+  var S = Object.assign(fresh(), load() || {});
+  var view = 'home', L = null, root = document.getElementById('root');
+
+  function dayKey(d) { return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+  function addXp(g) {
+    S.xp += g;
+    var k = dayKey(new Date());
+    if (!S.today || S.today.k !== k) S.today = { k: k, xp: 0 };
+    S.today.xp += g;
+  }
+  function todayXp() { return S.today && S.today.k === dayKey(new Date()) ? S.today.xp : 0; }
+  function bumpStreak() {
+    var t = new Date(), k = dayKey(t);
+    if (S.lastDay === k) return;
+    var y = new Date(t); y.setDate(y.getDate() - 1);
+    S.streak = S.lastDay === dayKey(y) ? S.streak + 1 : 1;
+    S.lastDay = k;
+  }
+  var ac;
+  function tone(seq) {
+    if (!S.sound) return;
+    try {
+      ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+      var t = ac.currentTime;
+      seq.forEach(function (n) {
+        var o = ac.createOscillator(), g = ac.createGain();
+        o.type = 'sine'; o.frequency.value = n[0];
+        g.gain.setValueAtTime(0.12, t); g.gain.exponentialRampToValueAtTime(0.001, t + n[1]);
+        o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + n[1]); t += n[1] * 0.9;
+      });
+    } catch (e) {}
+  }
+  function unlocked(id) { return S.open || id === 1 || !!S.done[id - 1]; }
+  function allDone() { return LEVELS.every(function (l) { return !!S.done[l.id]; }); }
+
+  /* ---------- Views ---------- */
+  function header() {
+    return '<header class="top"><div class="brand"><span class="aks" aria-hidden="true">ꦠꦸꦤ꧀ꦠꦸꦤ꧀</span><b>Tuntun Basa</b></div>' +
+      '<div class="stats" aria-label="Statistik">' +
+      '<span class="stat fire" title="Streak harian">' + ico('flame') + S.streak + '</span>' +
+      '<span class="stat xp" title="XP">' + ico('bolt') + S.xp + '</span>' +
+      '<span class="stat heart" title="Nyawa">' + ico('heart') + S.hearts + '</span></div></header>';
+  }
+  function tabs() {
+    function t(v, n, ic) { return '<button class="tab" data-a="tab" data-v="' + v + '"' + (view === v ? ' aria-current="page"' : '') + '>' + ico(ic) + n + '</button>'; }
+    return '<nav class="tabs" aria-label="Menu"><div>' + t('home', 'Belajar', 'home') + t('board', 'Papan skor', 'chart') + t('theory', 'Teori', 'book') + '</div></nav>';
+  }
+  function stars(n) {
+    var s = ''; for (var i = 1; i <= 3; i++) s += '<span class="' + (i <= n ? '' : 'off') + '">' + ico('star') + '</span>';
+    return '<div class="stars" aria-label="' + n + ' dari 3 bintang">' + s + '</div>';
+  }
+  function trail() {
+    var ROW = 196, n = LEVELS.length, H = (n + 1) * ROW - 20, xs = [30, 70];
+    var cur = 0;
+    LEVELS.forEach(function (l) { if (!cur && unlocked(l.id) && !S.done[l.id]) cur = l.id; });
+    function cx(i) { return i < n ? xs[i % 2] : 50; }
+    function cy(i) { return i * ROW + 48; }
+    var segs = '';
+    for (var i = 0; i < n; i++) {
+      var y0 = cy(i), y1 = cy(i + 1), ym = (y0 + y1) / 2;
+      var on = i < n && S.done[LEVELS[i].id] ? ' class="on"' : '';
+      segs += '<path' + on + ' d="M' + cx(i) + ' ' + y0 + ' C' + cx(i) + ' ' + ym + ' ' + cx(i + 1) + ' ' + ym + ' ' + cx(i + 1) + ' ' + y1 + '"/>';
+    }
+    var stops = LEVELS.map(function (l, i) {
+      var ok = unlocked(l.id), done = !!S.done[l.id], isCur = cur === l.id;
+      var cls = done ? ' done' : (ok ? (isCur ? ' cur' : '') : ' locked');
+      var inner = done ? ico('check') : (ok ? l.id : ico('lock'));
+      return '<div class="stop" style="left:' + cx(i) + '%;top:' + (i * ROW) + 'px">' + (isCur ? '<span class="start-tip">MULAI</span>' : '') +
+        '<button class="node' + cls + '" data-a="start" data-id="' + l.id + '"' + (ok ? '' : ' aria-disabled="true"') + ' aria-label="Level ' + l.id + ': ' + esc(l.name) + (ok ? '' : ' (terkunci)') + '">' + inner + '</button>' +
+        '<h3>' + esc(l.name) + '</h3><p>' + esc(l.sub) + '</p>' + (done ? stars(S.done[l.id]) : '') + '</div>';
+    }).join('');
+    var fin = allDone();
+    var goal = '<div class="stop goalpost' + (fin ? '' : ' off') + '" style="left:50%;top:' + (n * ROW - 6) + 'px">' +
+      gunungan(fin ? 'var(--gold)' : 'var(--surface-2)', fin ? 'var(--sogan)' : 'var(--muted)', fin ? 'var(--deep)' : 'var(--line)') +
+      '<h3>' + (fin ? 'Unit 1 tamat!' : 'Gunungan') + '</h3><p>' + (fin ? 'Kabeh level wis rampung.' : 'Tuntaske kabeh level.') + '</p></div>';
+    return '<div class="trail" style="height:' + H + 'px"><svg class="line" viewBox="0 0 100 ' + H + '" preserveAspectRatio="none" aria-hidden="true">' + segs + '</svg>' + stops + goal + '</div>';
+  }
+  function home() {
+    var tx = Math.min(todayXp(), GOAL), pct = Math.round(100 * tx / GOAL);
+    return header() +
+      '<section class="banner"><div><small>Unit 1 · SMP</small><h1>Unggah-ungguh basa</h1><p>Ngoko, krama, krama inggil, lan krama andhap</p></div>' + gunungan('#E7C46A', '#7A4A22', '#172A5E') + '</section>' +
+      '<div class="goal card"><div class="gh"><span>Target dina iki</span><span>' + tx + ' / ' + GOAL + ' XP</span></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + GOAL + '" aria-valuenow="' + tx + '"><i style="width:' + pct + '%"></i></div></div>' +
+      trail() + tabs();
+  }
+  function board() {
+    var rows = LOWER.map(function (r) { return { n: r[0], p: r[1], me: false }; });
+    rows.push({ n: 'Kowe', p: S.xp, me: true });
+    rows.sort(function (a, b) { return b.p - a.p; });
+    var html = rows.map(function (r, i) {
+      return '<div class="card row' + (r.me ? ' me' : '') + '"><span class="rank">' + (i + 1) + '</span><span class="av">' + esc(r.n[0]) + '</span><span class="grow">' + esc(r.n) + '</span><span class="pts">' + r.p + ' XP</span></div>';
+    }).join('');
+    return header() + '<h2 class="sec">Papan skor mingguan</h2><p class="lead">Sing XP-é paling akèh ana ing ndhuwur. <span class="pill">Data contoh</span></p><div class="list">' + html + '</div>' + tabs();
+  }
+  function theory() {
+    var items = [
+      ['Skor XP dan lencana', 'Penguatan positif', 'Jawaban benar langsung diberi XP dan bintang. Hadiah menambah peluang siswa mengulang perilaku belajar yang benar.'],
+      ['Umpan balik seketika', 'Konsekuensi segera', 'Setiap jawaban langsung dibalas Bener atau Durung pas, disertai penjelasan tingkat tuturnya.'],
+      ['Nyawa berkurang', 'Hukuman negatif', 'Jawaban salah mengurangi nyawa, yaitu sesuatu yang disukai siswa. Tujuannya menekan jawaban asal-asalan.'],
+      ['Bonus kejutan', 'Jadwal rasio variabel', 'Sesekali jawaban benar memberi bonus XP tanpa pola tetap. Jadwal seperti ini membuat perilaku bertahan lama.'],
+      ['Streak dan target harian', 'Jadwal interval tetap', 'Selesai satu pelajaran tiap hari menjaga streak, dan target 50 XP memberi tujuan harian yang jelas.'],
+      ['Soal salah diulang', 'Pembentukan perilaku (shaping)', 'Soal yang salah muncul lagi di akhir sampai dijawab benar. Level naik bertahap dari ngoko sampai campuran.']
+    ].map(function (r) {
+      return '<div class="card map-item"><h3>' + esc(r[0]) + '</h3><div class="feat">' + esc(r[1]) + '</div><p>' + esc(r[2]) + '</p></div>';
+    }).join('');
+    return header() + '<h2 class="sec">Teori Skinner di aplikasi ini</h2><p class="lead">Operant conditioning: perilaku dibentuk oleh konsekuensinya. Berikut pemetaan fitur ke konsep.</p><div class="list">' + items + '</div>' +
+      '<h2 class="sec" style="margin-top:20px">Alat demo</h2><div class="tools">' +
+      '<button class="ghost" data-a="unlock">' + (S.open ? 'Kunci level lagi' : 'Buka semua level') + '</button>' +
+      '<button class="ghost" data-a="sound">Suara: ' + (S.sound ? 'hidup' : 'mati') + '</button>' +
+      '<button class="ghost" data-a="refill">Isi ulang nyawa</button>' +
+      '<button class="ghost" data-a="reset">Atur ulang semua progres</button></div>' + tabs();
+  }
+
+  /* ---------- Lesson ---------- */
+  function startLesson(id) {
+    if (!unlocked(id)) return;
+    if (S.hearts <= 0) { view = 'fail'; draw(); return; }
+    var lv = LEVELS.filter(function (l) { return l.id === id; })[0];
+    L = { lv: lv, queue: lv.qs.map(function (q) { return { q: q, retry: false }; }), solved: 0, total: lv.qs.length, wrong: 0, gain: 0, phase: 'ask', cur: null, ui: null, bonus: 0, missed: {} };
+    view = 'lesson'; nextQ();
+  }
+  function nextQ() {
+    L.cur = L.queue.shift(); L.phase = 'ask'; L.bonus = 0;
+    var q = L.cur.q;
+    if (q.t === 'mc') {
+      var order = shuffle(q.opts.map(function (o, i) { return i; }));
+      L.ui = { order: order, sel: null };
+    } else if (q.t === 'match') {
+      var idx = q.pairs.map(function (p, i) { return i; });
+      L.ui = { left: shuffle(idx), right: shuffle(idx), matched: {}, count: 0, selL: null, selR: null, flash: null, mistake: false };
+    } else {
+      var all = q.words.map(function (w) { return { w: w, ok: true }; }).concat(q.extra.map(function (w) { return { w: w, ok: false }; }));
+      L.ui = { bank: shuffle(all), chosen: [] };
+    }
+    draw();
+  }
+  function lessonTop() {
+    var pct = Math.round(100 * L.solved / L.total);
+    return '<div class="ltop"><button class="x" data-a="close" aria-label="Keluar dari pelajaran">' + ico('x') + '</button>' +
+      '<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '"><i style="width:' + pct + '%"></i></div>' +
+      '<span class="stat heart">' + ico('heart') + S.hearts + '</span></div>';
+  }
+  function who(q) {
+    if (!q.who) return '';
+    return '<div class="bubble-row"><span class="av">' + esc(q.who[0]) + '</span><div class="bubble"><small>Lawan bicara</small>' + esc(q.who) + '</div></div>';
+  }
+  function answerText(q) {
+    if (q.t === 'mc') return q.opts[q.a];
+    if (q.t === 'build') return q.words.join(' ') + '.';
+    return q.pairs.map(function (p) { return p[0] + ' = ' + p[1]; }).join(', ');
+  }
+  function lesson() {
+    var q = L.cur.q, u = L.ui, fb = L.phase === 'fb', body = '', dock = '';
+    if (q.t === 'mc') {
+      body = who(q) + '<h2>' + esc(q.q) + '</h2><div class="opts">' + u.order.map(function (oi, n) {
+        var cls = '';
+        if (fb) { if (oi === q.a) cls = ' right'; else if (u.sel === oi) cls = ' wrong'; }
+        else if (u.sel === oi) cls = ' sel';
+        return '<button class="opt' + cls + '" data-a="mc" data-i="' + oi + '"' + (fb ? ' disabled' : '') + '><span class="k">' + 'ABCD'[n] + '</span>' + esc(q.opts[oi]) + '</button>';
+      }).join('') + '</div>';
+    } else if (q.t === 'match') {
+      var side = function (list, key, act) {
+        return '<div class="col">' + list.map(function (i) {
+          var cls = u.matched[i] ? ' ok' : '';
+          if (!cls && u['sel' + key] === i) cls = ' sel';
+          if (u.flash && u.flash[key === 'L' ? 0 : 1] === i) cls = ' flash';
+          return '<button class="m' + cls + '" data-a="' + act + '" data-i="' + i + '"' + (u.matched[i] || fb ? ' disabled' : '') + '>' + esc(q.pairs[i][key === 'L' ? 0 : 1]) + '</button>';
+        }).join('') + '</div>';
+      };
+      body = '<h2>' + esc(q.q) + '</h2><p class="hint">Ketuk satu kata di kiri, lalu pasangannya di kanan.</p><div class="match">' + side(u.left, 'L', 'mL') + side(u.right, 'R', 'mR') + '</div>';
+    } else {
+      var chosen = u.chosen.map(function (bi, n) {
+        return '<button class="chip" data-a="bc" data-i="' + n + '"' + (fb ? ' disabled' : '') + '>' + esc(u.bank[bi].w) + '</button>';
+      }).join('');
+      var bank = u.bank.map(function (b, bi) {
+        var used = u.chosen.indexOf(bi) !== -1;
+        return '<button class="chip' + (used ? ' used' : '') + '" data-a="bw" data-i="' + bi + '"' + (used || fb ? ' disabled' : '') + '>' + esc(b.w) + '</button>';
+      }).join('');
+      body = '<h2>' + esc(q.q) + '</h2><div class="sentence-id">' + esc(q.id) + '</div><div class="answer" aria-label="Susunan jawabanmu">' + chosen + '</div><div class="bank">' + bank + '</div>';
+    }
+    if (!fb) {
+      var ready = q.t === 'mc' ? u.sel !== null : (q.t === 'build' ? u.chosen.length > 0 : false);
+      if (q.t === 'match') dock = '';
+      else dock = '<div class="dock"><div><button class="btn" data-a="check"' + (ready ? '' : ' disabled') + '>Periksa</button></div></div>';
+    } else {
+      var good = L.ok, ans = answerText(q);
+      var title = L.lastTitle || (good ? PRAISE[Math.floor(Math.random() * PRAISE.length)] : MISS[Math.floor(Math.random() * MISS.length)]);
+      var gain = good ? '<span class="gain">+' + L.lastGain + ' XP</span>' : '';
+      var msg = good ? q.why : (q.t === 'match' ? 'Ada pasangan yang sempat salah, nyawa berkurang satu. ' : 'Jawaban benar: ' + ans + ' ') + q.why;
+      dock = '<div class="dock ' + (good ? 'ok' : 'bad') + '"><div><div class="fbt">' + ico(good ? 'check' : 'x') + '<span>' + esc(title) + '</span>' + gain + '</div>' +
+        '<p class="fbm">' + esc(msg) + '</p><button class="btn' + (good ? '' : ' bad') + '" data-a="next">Terusake</button></div></div>';
+    }
+    return lessonTop() + '<div class="lbody">' + body + '</div>' + dock;
+  }
+  function award(retry) {
+    var g = retry ? 5 : 10;
+    if (Math.random() < 0.25) { g += 5; L.bonus = 5; }
+    addXp(g); L.gain += g; L.lastGain = g;
+    return g;
+  }
+  function miss(q) { L.missed[q.q] = (q.t === 'build' ? q.id : q.q) + '  →  ' + answerText(q); }
+  function resolve(ok) {
+    var q = L.cur.q;
+    L.phase = 'fb'; L.ok = ok; L.lastTitle = null;
+    if (ok) {
+      L.solved++; award(L.cur.retry); tone([[660, 0.12], [880, 0.2]]);
+      if (L.bonus) L.lastTitle = 'Bonus kejutan!';
+    } else {
+      S.hearts = Math.max(0, S.hearts - 1); L.wrong++; miss(q);
+      L.queue.push({ q: q, retry: true }); tone([[220, 0.25]]);
+    }
+    save(); draw();
+  }
+  function matchDone() {
+    var u = L.ui;
+    L.phase = 'fb'; L.solved++; L.lastTitle = null;
+    if (!u.mistake) { L.ok = true; award(L.cur.retry); tone([[660, 0.12], [880, 0.2]]); if (L.bonus) L.lastTitle = 'Bonus kejutan!'; }
+    else { L.ok = false; L.wrong++; miss(L.cur.q); L.lastTitle = 'Wis rampung, nanging ana sing salah.'; }
+    save(); draw();
+  }
+  function finish() {
+    var id = L.lv.id, w = L.wrong;
+    var st = w === 0 ? 3 : (w <= 2 ? 2 : 1);
+    addXp(20); L.gain += 20;
+    S.done[id] = Math.max(S.done[id] || 0, st);
+    bumpStreak(); save(); tone([[523, 0.12], [659, 0.12], [784, 0.25]]);
+    L.stars = st; L.acc = Math.round(100 * L.total / (L.total + w));
+    view = 'done'; draw();
+  }
+  function confetti() {
+    var cols = ['var(--gold)', 'var(--brand)', 'var(--ok)', 'var(--sogan)', 'var(--bad)'], h = '';
+    for (var i = 0; i < 22; i++) h += '<i style="left:' + Math.round(Math.random() * 100) + '%;background:' + cols[i % cols.length] + ';animation-delay:' + (Math.random() * 0.8).toFixed(2) + 's"></i>';
+    return '<div class="confetti" aria-hidden="true">' + h + '</div>';
+  }
+  function doneView() {
+    var keys = Object.keys(L.missed), rev = '';
+    if (keys.length) {
+      rev = '<div class="card review"><h3>Perlu diulang</h3><ul>' + keys.slice(0, 5).map(function (k) {
+        var parts = L.missed[k].split('  →  ');
+        return '<li>' + esc(parts[0]) + '<br><span>' + esc(parts[1]) + '</span></li>';
+      }).join('') + '</ul></div>';
+    }
+    var next = LEVELS.filter(function (l) { return l.id === L.lv.id + 1; })[0];
+    return confetti() + '<div class="center"><div class="seal">' + ico('check') + '</div><h1>Pelajaran rampung!</h1><p>' + esc(L.lv.name) + ' wis kok tuntaske.</p>' +
+      '<div class="res"><div class="card xpc"><b>' + L.gain + '</b><span>XP</span></div><div class="card okc"><b>' + L.acc + '%</b><span>Tepat</span></div><div class="card"><b>' + S.streak + '</b><span>Streak</span></div></div>' +
+      stars(L.stars) +
+      '<div class="card lencana"><span class="medal">' + ico('star') + '</span><div><b>' + esc(L.lv.badge) + '</b><span>Lencana baru untuk koleksimu.</span></div></div>' +
+      rev +
+      '<button class="btn" data-a="home">Terusake</button>' +
+      (next ? '' : '<p>Kabeh level wis rampung. Gunungan ing peta wis nyala.</p>') + '</div>';
+  }
+  function failView() {
+    return '<div class="center"><div class="seal bad">' + ico('heart') + '</div><h1>Nyawa entek</h1><p>Jawaban salah mengurangi nyawa. Isi ulang untuk melanjutkan belajar.</p>' +
+      '<button class="btn brand" data-a="refill-go">Isi ulang nyawa</button><button class="ghost" data-a="home">Kembali ke peta</button></div>';
+  }
+
+  function draw() {
+    var h = '';
+    if (view === 'home') h = home();
+    else if (view === 'board') h = board();
+    else if (view === 'theory') h = theory();
+    else if (view === 'lesson') h = lesson();
+    else if (view === 'done') h = doneView();
+    else if (view === 'fail') h = failView();
+    root.innerHTML = h;
+    window.scrollTo(0, 0);
+  }
+  function redraw() { var y = window.scrollY; root.innerHTML = view === 'lesson' ? lesson() : root.innerHTML; window.scrollTo(0, y); }
+
+  /* ---------- Events ---------- */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-a]');
+    if (!b || b.disabled) return;
+    var a = b.dataset.a, i = b.dataset.i !== undefined ? +b.dataset.i : null;
+    var u = L && L.ui;
+    if (a === 'tab') { view = b.dataset.v; draw(); }
+    else if (a === 'start') { startLesson(+b.dataset.id); }
+    else if (a === 'close') { view = 'home'; L = null; draw(); }
+    else if (a === 'home') { view = 'home'; draw(); }
+    else if (a === 'mc') { u.sel = i; redraw(); }
+    else if (a === 'bw') { u.chosen.push(i); redraw(); }
+    else if (a === 'bc') { u.chosen.splice(i, 1); redraw(); }
+    else if (a === 'check') {
+      var q = L.cur.q, ok = false;
+      if (q.t === 'mc') ok = u.sel === q.a;
+      else ok = u.chosen.map(function (bi) { return u.bank[bi].w; }).join(' ') === q.words.join(' ');
+      resolve(ok);
+    }
+    else if (a === 'mL' || a === 'mR') {
+      if (a === 'mL') u.selL = i; else u.selR = i;
+      if (u.selL !== null && u.selR !== null) {
+        if (u.selL === u.selR) {
+          u.matched[u.selL] = true; u.count++; u.selL = null; u.selR = null; tone([[700, 0.1]]);
+          if (u.count === L.cur.q.pairs.length) { matchDone(); return; }
+        } else {
+          u.flash = [u.selL, u.selR]; u.selL = null; u.selR = null; tone([[220, 0.2]]);
+          if (!u.mistake) {
+            u.mistake = true; S.hearts = Math.max(0, S.hearts - 1); save();
+            if (S.hearts === 0) { view = 'fail'; draw(); return; }
+          }
+          var cur = L.cur;
+          setTimeout(function () { if (L && L.cur === cur && L.ui.flash) { L.ui.flash = null; redraw(); } }, 450);
+        }
+      }
+      redraw();
+    }
+    else if (a === 'next') {
+      if (S.hearts <= 0) { view = 'fail'; draw(); }
+      else if (!L.queue.length) finish();
+      else nextQ();
+    }
+    else if (a === 'refill') { S.hearts = 5; save(); draw(); }
+    else if (a === 'refill-go') { S.hearts = 5; save(); view = 'home'; draw(); }
+    else if (a === 'unlock') { S.open = !S.open; save(); draw(); }
+    else if (a === 'sound') { S.sound = !S.sound; save(); draw(); }
+    else if (a === 'reset') { S = fresh(); save(); view = 'home'; draw(); }
+  });
+  draw();
+})();
+</script>
+
+</body></html>
